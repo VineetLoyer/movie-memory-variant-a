@@ -298,6 +298,3 @@ database lease would come first if deployment needed several server processes.
 
 AI assistance is described in [AI_USAGE.md](AI_USAGE.md). The font license and
 image-source notes are included under `public/`.
-
-For optional architecture, validation, fallback, 4K, and test-evidence images,
-see [the screenshot guide](docs/screenshots.md).

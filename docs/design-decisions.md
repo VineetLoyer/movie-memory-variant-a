@@ -146,7 +146,3 @@ Each public commit and push requires owner approval. Deployment is outside this 
 | Bounded text generation | FR-07, FR-10, NFR-02, NFR-03 | [provider.ts](../src/lib/fact-engine/provider.ts), [generation.ts](../src/lib/fact-engine/generation.ts) |
 | Personal visual design and useful states | FR-06, NFR-06, NFR-07 | [views.tsx](../src/components/views.tsx), [globals.css](../src/app/globals.css), [avatar.tsx](../src/components/avatar.tsx) |
 | Independent verification and explainable design | NFR-08, NFR-09, NFR-10 | [test guide](../tests/fixtures/README.md), [setup](setup.md), [architecture explorer](../src/app/architecture/explorer.tsx) |
-
-For visual evidence of the system, function map, responsive scale, and failure
-states, follow [the screenshot guide](screenshots.md). Keep screenshots next to
-the decision they illustrate; retain diagrams and tests as the source of detail.

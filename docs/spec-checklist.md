@@ -192,7 +192,6 @@ Controlled sessions do not verify Google OAuth. Controlled provider responses do
 | `docs/acceptance-scenarios.md` | FR-01 through FR-12, NFR-02, NFR-06, NFR-07 | Give repeatable manual checks and deterministic failure tests. |
 | `docs/prototype.md` | NFR-05, NFR-08, NFR-09 | Separate independent-copy, controlled, live, and still-manual evidence. |
 | `AI_USAGE.md` | Assessment deliverable, NFR-10 | State how AI contributed and how the owner reviewed the work. |
-| `docs/screenshots.md` | FR-01 through FR-12, NFR-07, NFR-08 | Plan user-journey, architecture, responsive, and failure-state images without overstating what an image proves. |
 | `docs/images/*.png` | FR-01, FR-02, FR-06, NFR-07 | Include the four supplied landing, onboarding, dashboard, and mobile screenshots in the README. |
 
 A second-machine setup, deployment, and new external-account checks are not claimed. Final document approval and push remain pending until explicitly approved.
