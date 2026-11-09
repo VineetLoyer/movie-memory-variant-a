@@ -30,8 +30,8 @@ Each batch has its own review and test gate. Some early batches contain only par
 | --- | --- | --- | --- | --- |
 | 1 | Assessment, requirements plan, and checklist | Confirm the assessment is unchanged. Check requirement IDs, diagrams, plain language, portable paths, and absence of secrets. | `docs: define assessment requirements and Variant A implementation plan` | Published as `e0d165c`. |
 | 2 | Dependency, build, lint, type, and test configuration | Check the lockfile and runtime versions. Review the environment template and ignore rules. | `chore: establish pinned application and verification configuration` | Published as `12b5a25`. |
-| 3 | Data model, migration, database access, shared types, and title validation | Validate the Prisma schema. Test constraints and migration setup against a separate database. | `feat: define persistent identity and movie fact model` | Prepared for review. Approval pending. |
-| 4 | Google sign-in, sessions, private onboarding, and related tests | Test routing, title checks, user ownership, competing saves, session expiry, and failed logout. | `feat: implement Google sessions and private onboarding` | Pending. |
+| 3 | Data model, migration, database access, shared types, and title validation | Validate the Prisma schema. Test constraints and migration setup against a separate database. | `feat: define persistent identity and movie fact model` | Published as `d7f54d1`. |
+| 4 | Google sign-in, sessions, private onboarding, and related tests | Test routing, title checks, user ownership, competing saves, session expiry, and failed logout. | `feat: implement Google sessions and private onboarding` | Prepared for review. Approval pending. |
 | 5 | Fact cache, pending task map, OpenAI call, and failure recovery | Test cache timing, overlapping requests, separate users, timeout, invalid output, save failure, and fallback. | `feat: implement scoped fact caching and failure recovery` | Pending. |
 | 6 | Pages, components, styles, licensed assets, and local design page | Run type checks, lint, and a build. Check keyboard use, application states, and phone-to-4K layouts. | `feat: assemble the responsive Movie Memory experience` | Pending. |
 | 7 | Complete application tests and publication checks | Run production-browser tests. Check user isolation, secrets, fixture cleanup, and setup from a clean copy. | `test: verify complete assessment journeys and publication safety` | Pending. |
@@ -63,6 +63,22 @@ Requirement IDs in comments refer to `docs-plan.md`. Comments explain each block
 | Title validation tests | FR-03, NFR-08 | Trimming, exact length boundaries, emoji input units, and unchanged valid text. |
 
 The schema alone does not enforce private reads, first-time-only saves, or a 60-second cache. Later service batches implement those checks.
+
+## Batch 4 code references
+
+| File or block | Requirement IDs | Responsibility |
+| --- | --- | --- |
+| Auth.js configuration and callback route | FR-01, FR-02, NFR-01, NFR-02 | Configure Google, stored sessions, safe profile fields, and local redirects. Page guards arrive in Batch 6. |
+| Session read and auth error boundary | FR-11, FR-12, NFR-02, NFR-06 | Keep adapter failures distinct from a signed-out result. Separate concurrent operation state. |
+| Identity service | FR-03, FR-04, FR-05, FR-06, FR-12, NFR-02 | Validate the session, select private records, and save the movie once for its owner. |
+| Server Actions | FR-01, FR-02, FR-03, FR-05, FR-11, NFR-06 | Start sign-in, validate form data, redirect after success, and return retryable failures. |
+| Auth error and session types | FR-06, FR-11, FR-12, NFR-02, NFR-08 | Define the safe error and stable session user ID. |
+| Auth form | FR-01, FR-11, NFR-06, NFR-07 | Show pending and retry states for sign-in and logout. Full pages and styles arrive in Batch 6. |
+| Auth unit and action tests | FR-01, FR-02, FR-03, FR-05, FR-11, FR-12, NFR-08 | Check redirects, ownership rules, rejected input, and failure results with controlled dependencies. |
+| Auth database tests and helper | FR-04, FR-05, FR-11, FR-12, NFR-02, NFR-09 | Check real stored sessions, competing saves, expiry, deletion, and failed revocation on the test database. |
+| Test fixtures and type-check scope | NFR-02, NFR-08, NFR-09 | Keep test dependencies explicit and separate from normal application startup. |
+
+Real Google sign-in needs a running application and owner credentials. Controlled auth tests do not replace that check.
 
 ## Requirement checks
 

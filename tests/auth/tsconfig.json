@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "plugins": []
+  },
+  "include": ["./**/*.ts", "../../src/auth.ts", "../../src/lib/identity.ts", "../../src/types/next-auth.d.ts"],
+  "exclude": ["../../node_modules"]
+}
