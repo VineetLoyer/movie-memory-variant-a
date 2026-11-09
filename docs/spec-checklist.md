@@ -33,8 +33,8 @@ Each batch has its own review and test gate. Some early batches contain only par
 | 3 | Data model, migration, database access, shared types, and title validation | Validate the Prisma schema. Test constraints and migration setup against a separate database. | `feat: define persistent identity and movie fact model` | Published as `d7f54d1`. |
 | 4 | Google sign-in, sessions, private onboarding, and related tests | Test routing, title checks, user ownership, competing saves, session expiry, and failed logout. | `feat: implement Google sessions and private onboarding` | Published as `e1c5171`. |
 | 5 | Fact cache, pending task map, OpenAI call, and failure recovery | Test cache timing, overlapping requests, separate users, timeout, invalid output, save failure, and fallback. | `feat: implement scoped fact caching and failure recovery` | Published as `4221eb2`. |
-| 6 | Pages, components, styles, licensed assets, and local design page | Run type checks, lint, and a build. Check keyboard use, application states, and phone-to-4K layouts. | `feat: assemble the responsive Movie Memory experience` | Prepared for review. Approval pending. |
-| 7 | Complete application tests and publication checks | Run production-browser tests. Check user isolation, secrets, fixture cleanup, and setup from a clean copy. | `test: verify complete assessment journeys and publication safety` | Pending. |
+| 6 | Pages, components, styles, licensed assets, and local design page | Run type checks, lint, and a build. Check keyboard use, application states, and phone-to-4K layouts. | `feat: assemble the responsive Movie Memory experience` | Published as `f4da105`. |
+| 7 | Complete application tests and publication checks | Run production-browser tests. Check user isolation, secrets, fixture cleanup, and setup from a clean copy. | `test: verify complete assessment journeys and publication safety` | Prepared for review. Approval pending. |
 | 8 | Final README, AI-usage note, and design explanations | Check setup commands, links, limits, and test evidence. Review the public repository details. | `docs: complete setup architecture and AI usage handoff` | Prepare last. |
 
 Adjust batch contents before review if a file needs supporting code or tests. Explain the change before requesting approval.
@@ -164,3 +164,15 @@ OpenAI can return different wording on each live generation. Compare the applica
 - [ ] The final README and AI-usage note are approved.
 - [ ] Every public commit has approval and a verified push result.
 - [ ] The owner receives the repository URL, final commit ID, and remaining limits.
+
+## Batch 7 verification references
+
+| Files | Requirement IDs | Purpose |
+| --- | --- | --- |
+| `tests/integration/*` | FR-04, FR-07, FR-08, FR-09, FR-10, NFR-08 | Compose real identity, storage, and generation with controlled provider results. |
+| `tests/integration/security/*` | FR-01, FR-04, FR-11, FR-12, NFR-02 | Check session enforcement, request origins, data ownership, and secret scanning. |
+| `tests/e2e/*` | FR-02 through FR-12, NFR-06, NFR-07, NFR-08 | Check the production application in desktop and mobile browsers. |
+| `tests/fixtures/*` and `tests/facts/manual.mjs` | NFR-02, NFR-08 | Isolate test sessions, provider responses, and faults from normal application startup. |
+| `scripts/check-secrets.mjs` | NFR-02, NFR-10 | Check tracked, staged, untracked, and built browser files before publication. |
+
+Controlled sessions do not verify Google OAuth. Controlled provider responses do not verify live OpenAI. The shared-task tests cover one server process.
