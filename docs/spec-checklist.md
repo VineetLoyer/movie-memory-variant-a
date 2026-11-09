@@ -6,6 +6,9 @@ Check a box only after the stated check is complete. Record approval separately 
 
 ## Review before each commit and push
 
+Use these boxes as a per-batch review template. The batch table records publication
+status; test evidence is summarized in `prototype.md`.
+
 - [ ] Show the current and proposed files side by side.
 - [ ] List each added, changed, and removed file.
 - [ ] Link the files to requirement IDs in `docs-plan.md`.
@@ -34,8 +37,8 @@ Each batch has its own review and test gate. Some early batches contain only par
 | 4 | Google sign-in, sessions, private onboarding, and related tests | Test routing, title checks, user ownership, competing saves, session expiry, and failed logout. | `feat: implement Google sessions and private onboarding` | Published as `e1c5171`. |
 | 5 | Fact cache, pending task map, OpenAI call, and failure recovery | Test cache timing, overlapping requests, separate users, timeout, invalid output, save failure, and fallback. | `feat: implement scoped fact caching and failure recovery` | Published as `4221eb2`. |
 | 6 | Pages, components, styles, licensed assets, and local design page | Run type checks, lint, and a build. Check keyboard use, application states, and phone-to-4K layouts. | `feat: assemble the responsive Movie Memory experience` | Published as `f4da105`. |
-| 7 | Complete application tests and publication checks | Run production-browser tests. Check user isolation, secrets, fixture cleanup, and setup from a clean copy. | `test: verify complete assessment journeys and publication safety` | Prepared for review. Approval pending. |
-| 8 | Final README, AI-usage note, and design explanations | Check setup commands, links, limits, and test evidence. Review the public repository details. | `docs: complete setup architecture and AI usage handoff` | Prepare last. |
+| 7 | Complete application tests and publication checks | Run production-browser tests. Check user isolation, secrets, fixture cleanup, and setup from a clean copy. | `test: verify complete assessment journeys and publication safety` | Published as `2451fa6`. |
+| 8 | Final README, AI-usage note, and design explanations | Check setup commands, links, limits, and test evidence. Review the public repository details. | `docs: complete setup architecture and AI usage handoff` | Prepared for review. Approval pending. |
 
 Adjust batch contents before review if a file needs supporting code or tests. Explain the change before requesting approval.
 
@@ -131,6 +134,9 @@ Complete integration and production-browser coverage is reviewed in Batch 7. Fin
 
 ## Checks after cloning
 
+Repeat this checklist for each new installation. The current local verification
+does not replace credential and browser checks on another machine.
+
 - [ ] The required runtime versions are documented.
 - [ ] `npm ci` installs the locked dependencies.
 - [ ] `.env.example` lists the required values without private credentials.
@@ -176,3 +182,17 @@ OpenAI can return different wording on each live generation. Compare the applica
 | `scripts/check-secrets.mjs` | NFR-02, NFR-10 | Check tracked, staged, untracked, and built browser files before publication. |
 
 Controlled sessions do not verify Google OAuth. Controlled provider responses do not verify live OpenAI. The shared-task tests cover one server process.
+
+## Batch 8 documentation references
+
+| File | Requirement IDs | Purpose |
+| --- | --- | --- |
+| `README.md` and `docs/setup.md` | NFR-01, NFR-09 | Explain prerequisites, environment values, migrations, startup, and test database setup. |
+| `docs/design-decisions.md` | FR-01 through FR-12, NFR-02 through NFR-08 | Explain the reasons, tradeoffs, and functions behind visual and backend choices. |
+| `docs/acceptance-scenarios.md` | FR-01 through FR-12, NFR-02, NFR-06, NFR-07 | Give repeatable manual checks and deterministic failure tests. |
+| `docs/prototype.md` | NFR-05, NFR-08, NFR-09 | Separate independent-copy, controlled, live, and still-manual evidence. |
+| `AI_USAGE.md` | Assessment deliverable, NFR-10 | State how AI contributed and how the owner reviewed the work. |
+| `docs/screenshots.md` | FR-01 through FR-12, NFR-07, NFR-08 | Plan user-journey, architecture, responsive, and failure-state images without overstating what an image proves. |
+| `docs/images/*.png` | FR-01, FR-02, FR-06, NFR-07 | Include the four supplied landing, onboarding, dashboard, and mobile screenshots in the README. |
+
+A second-machine setup, deployment, and new external-account checks are not claimed. Final document approval and push remain pending until explicitly approved.
