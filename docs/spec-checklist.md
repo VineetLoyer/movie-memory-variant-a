@@ -4,32 +4,33 @@ Use this checklist to build, test, review, and publish Movie Memory.
 
 Check a box only after the stated check is complete. Record approval separately from test results.
 
-## Review before each commit and push
+## Completed review and publication checks
 
-Use these boxes as a per-batch review template. The batch table records publication
-status; test evidence is summarized in `prototype.md`.
+These boxes record the completed publication of Batches 1–8. The batch table
+records their commit IDs; test evidence is summarized in `prototype.md`.
+Later changes require their own review and approval before commit and push.
 
-- [ ] Show the current and proposed files side by side.
-- [ ] List each added, changed, and removed file.
-- [ ] Link the files to requirement IDs in `docs-plan.md`.
-- [ ] Show the test results for the proposed files.
-- [ ] State whether the batch contains a complete application or only part of it.
-- [ ] Show the exact commit message and author.
-- [ ] Get approval for the commit and push.
-- [ ] Stage only the approved files.
-- [ ] Scan the staged files for secrets and private data.
-- [ ] Check that the staged content matches the approved content.
-- [ ] Commit the approved batch.
-- [ ] Push the approved commit.
-- [ ] Verify the commit on GitHub and record its ID.
+- [x] Show the current and proposed files side by side.
+- [x] List each added, changed, and removed file.
+- [x] Link the files to requirement IDs in `docs-plan.md`.
+- [x] Show the test results for the proposed files.
+- [x] State whether the batch contains a complete application or only part of it.
+- [x] Show the exact commit message and author.
+- [x] Get approval for the commit and push.
+- [x] Stage only the approved files.
+- [x] Scan the staged files for secrets and private data.
+- [x] Check that the staged content matches the approved content.
+- [x] Commit the approved batch.
+- [x] Push the approved commit.
+- [x] Verify the commit on GitHub and record its ID.
 
 Get new approval if the proposed content or commit message changes.
 
-## Planned batches
+## Published batches
 
 Each batch has its own review and test gate. Some early batches contain only part of the application.
 
-| Batch | Files or feature | Checks before approval | Proposed commit message | Status |
+| Batch | Files or feature | Checks before approval | Commit message | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Assessment, requirements plan, and checklist | Confirm the assessment is unchanged. Check requirement IDs, diagrams, plain language, portable paths, and absence of secrets. | `docs: define assessment requirements and Variant A implementation plan` | Published as `e0d165c`. |
 | 2 | Dependency, build, lint, type, and test configuration | Check the lockfile and runtime versions. Review the environment template and ignore rules. | `chore: establish pinned application and verification configuration` | Published as `12b5a25`. |
@@ -38,13 +39,13 @@ Each batch has its own review and test gate. Some early batches contain only par
 | 5 | Fact cache, pending task map, OpenAI call, and failure recovery | Test cache timing, overlapping requests, separate users, timeout, invalid output, save failure, and fallback. | `feat: implement scoped fact caching and failure recovery` | Published as `4221eb2`. |
 | 6 | Pages, components, styles, licensed assets, and local design page | Run type checks, lint, and a build. Check keyboard use, application states, and phone-to-4K layouts. | `feat: assemble the responsive Movie Memory experience` | Published as `f4da105`. |
 | 7 | Complete application tests and publication checks | Run production-browser tests. Check user isolation, secrets, fixture cleanup, and setup from a clean copy. | `test: verify complete assessment journeys and publication safety` | Published as `2451fa6`. |
-| 8 | Final README, AI-usage note, and design explanations | Check setup commands, links, limits, and test evidence. Review the public repository details. | `docs: complete setup architecture and AI usage handoff` | Prepared for review. Approval pending. |
+| 8 | Final README, AI-usage note, and design explanations | Check setup commands, links, limits, and test evidence. Review the public repository details. | `docs: complete setup architecture and AI usage handoff` | Published as `039a788`. |
 
 Adjust batch contents before review if a file needs supporting code or tests. Explain the change before requesting approval.
 
 Do not describe an early configuration or service batch as a complete application. Run the full application checks after assembly.
 
-Prepare the README and AI-usage note in Batch 8.
+The README and AI-usage note were completed in Batch 8.
 
 ## Batch 3 code references
 
@@ -65,18 +66,18 @@ Requirement IDs in comments refer to `docs-plan.md`. Comments explain each block
 | Test database helper | NFR-02, NFR-09 | Connection and role checks before tests can write. |
 | Title validation tests | FR-03, NFR-08 | Trimming, exact length boundaries, emoji input units, and unchanged valid text. |
 
-The schema alone does not enforce private reads, first-time-only saves, or a 60-second cache. Later service batches implement those checks.
+The schema alone does not enforce private reads, first-time-only saves, or a 60-second cache. The identity and fact services implement those checks.
 
 ## Batch 4 code references
 
 | File or block | Requirement IDs | Responsibility |
 | --- | --- | --- |
-| Auth.js configuration and callback route | FR-01, FR-02, NFR-01, NFR-02 | Configure Google, stored sessions, safe profile fields, and local redirects. Page guards arrive in Batch 6. |
+| Auth.js configuration and callback route | FR-01, FR-02, NFR-01, NFR-02 | Configure Google, stored sessions, safe profile fields, and local redirects. Page guards are included in Batch 6. |
 | Session read and auth error boundary | FR-11, FR-12, NFR-02, NFR-06 | Keep adapter failures distinct from a signed-out result. Separate concurrent operation state. |
 | Identity service | FR-03, FR-04, FR-05, FR-06, FR-12, NFR-02 | Validate the session, select private records, and save the movie once for its owner. |
 | Server Actions | FR-01, FR-02, FR-03, FR-05, FR-11, NFR-06 | Start sign-in, validate form data, redirect after success, and return retryable failures. |
 | Auth error and session types | FR-06, FR-11, FR-12, NFR-02, NFR-08 | Define the safe error and stable session user ID. |
-| Auth form | FR-01, FR-11, NFR-06, NFR-07 | Show pending and retry states for sign-in and logout. Full pages and styles arrive in Batch 6. |
+| Auth form | FR-01, FR-11, NFR-06, NFR-07 | Show pending and retry states for sign-in and logout. Full pages and styles are included in Batch 6. |
 | Auth unit and action tests | FR-01, FR-02, FR-03, FR-05, FR-11, FR-12, NFR-08 | Check redirects, ownership rules, rejected input, and failure results with controlled dependencies. |
 | Auth database tests and helper | FR-04, FR-05, FR-11, FR-12, NFR-02, NFR-09 | Check real stored sessions, competing saves, expiry, deletion, and failed revocation on the test database. |
 | Test fixtures and type-check scope | NFR-02, NFR-08, NFR-09 | Keep test dependencies explicit and separate from normal application startup. |
@@ -98,7 +99,7 @@ Real Google sign-in needs a running application and owner credentials. Controlle
 | Fact unit and transport tests | FR-07, FR-08, FR-09, FR-10, NFR-02, NFR-08 | Check boundaries, independent scopes, invalid output, retries, and late responses with controlled providers. |
 | Fact database tests | FR-04, FR-07, FR-08, FR-09, FR-10, NFR-04, NFR-09 | Check actual storage, timestamps, ownership, burst saves, and fallback on the test database. |
 
-Controlled provider tests make no paid calls. Full browser rendering remains in Batch 6 and final browser checks in Batch 7.
+Controlled provider tests make no paid calls. The UI was assembled in Batch 6 and production-browser checks passed in Batch 7.
 
 ## Batch 6 code references
 
@@ -113,11 +114,11 @@ Controlled provider tests make no paid calls. Full browser rendering remains in 
 | Local architecture artifact | NFR-08 | Explain module roles and decisions. Its state explorer makes no provider or database calls. |
 | UI and resolution tests | FR-01, FR-02, FR-03, FR-06, FR-10, FR-12, NFR-06, NFR-07, NFR-08 | Test page guards, returned states, keyboard controls, and isolated dependency selection. |
 
-Complete integration and production-browser coverage is reviewed in Batch 7. Final setup and AI-usage documents remain in Batch 8.
+Integration and production-browser checks were completed in Batch 7. Setup and AI-usage documents were published in Batch 8.
 
 ## Requirement checks
 
-| Requirement IDs | Planned files | Required checks |
+| Requirement IDs | Implementation files | Required checks |
 | --- | --- | --- |
 | FR-01, FR-02, FR-12 | `src/auth.ts` and page routes | Check Google sign-in separately from test sessions. Test signed-out, expired-session, and returning-user routes. |
 | FR-03, FR-04, FR-05 | `movie-input.ts`, `identity.ts`, `actions.ts`, and the User model | Test spaces, length limits, invalid form data, competing saves, wrong user IDs, and failed writes. |
@@ -134,42 +135,45 @@ Complete integration and production-browser coverage is reviewed in Batch 7. Fin
 
 ## Checks after cloning
 
-Repeat this checklist for each new installation. The current local verification
-does not replace credential and browser checks on another machine.
+The owner confirmed successful setup and application checks on a second machine.
+The checks below combine that manual confirmation with the recorded automated
+verification. Failure and authorization cases are covered by the controlled
+tests; they are not inferred from a successful sign-in alone. Repeat these checks
+for future installations.
 
-- [ ] The required runtime versions are documented.
-- [ ] `npm ci` installs the locked dependencies.
-- [ ] `.env.example` lists the required values without private credentials.
-- [ ] Google origin and callback settings are documented.
-- [ ] The Prisma client can be generated.
-- [ ] The checked-in migration creates the required database tables.
-- [ ] Setup does not require private files or tools from another checkout.
-- [ ] The application starts with the documented command.
-- [ ] Google sign-in reaches onboarding for a new user.
-- [ ] Saving a valid title opens the correct dashboard.
-- [ ] A returning user sees the saved movie.
-- [ ] Fact generation, cache reuse, and failure recovery match the requirements.
-- [ ] Logout blocks later access to private pages.
-- [ ] The documented tests use a separate test database.
+- [x] The required runtime versions are documented.
+- [x] `npm ci` installs the locked dependencies.
+- [x] `.env.example` lists the required values without private credentials.
+- [x] Google origin and callback settings are documented.
+- [x] The Prisma client can be generated.
+- [x] The checked-in migration creates the required database tables.
+- [x] Setup does not require private files or tools from another checkout.
+- [x] The application starts with the documented command.
+- [x] Google sign-in reaches onboarding for a new user.
+- [x] Saving a valid title opens the correct dashboard.
+- [x] A returning user sees the saved movie.
+- [x] Fact generation, cache reuse, and failure recovery match the requirements.
+- [x] Logout blocks later access to private pages.
+- [x] The documented tests use a separate test database.
 
 OpenAI can return different wording on each live generation. Compare the application behavior and saved records, not fixed live response text.
 
 ## Final acceptance
 
-- [ ] Every functional requirement has passing evidence.
-- [ ] Every non-functional requirement has passing evidence or a stated, accepted limit.
-- [ ] The application matches the approved design and user flows.
-- [ ] The interface displays real user data and saved facts.
-- [ ] Source and asset changes match the approved comparisons.
-- [ ] Test fixtures remain separate from application data.
-- [ ] All owned test records are removed after testing.
-- [ ] Controlled test responses are identified as test data.
-- [ ] Live Google and OpenAI checks are reported separately from controlled tests.
-- [ ] Paid checks use only the approved allowance.
-- [ ] The public tree contains no credentials, real sessions, or private test reports.
-- [ ] The final README and AI-usage note are approved.
-- [ ] Every public commit has approval and a verified push result.
-- [ ] The owner receives the repository URL, final commit ID, and remaining limits.
+- [x] Every functional requirement has passing evidence.
+- [x] Every non-functional requirement has passing evidence or a stated, accepted limit.
+- [x] The application matches the approved design and user flows.
+- [x] The interface displays real user data and saved facts.
+- [x] Source and asset changes match the approved comparisons.
+- [x] Test fixtures remain separate from application data.
+- [x] All owned test records are removed after testing.
+- [x] Controlled test responses are identified as test data.
+- [x] Live Google and OpenAI checks are reported separately from controlled tests.
+- [x] Paid checks use only the approved allowance.
+- [x] The public tree contains no credentials, real sessions, or private test reports.
+- [x] The final README and AI-usage note are approved.
+- [x] Every public commit has approval and a verified push result.
+- [x] The owner receives the repository URL, final commit ID, and remaining limits.
 
 ## Batch 7 verification references
 
@@ -194,4 +198,8 @@ Controlled sessions do not verify Google OAuth. Controlled provider responses do
 | `AI_USAGE.md` | Assessment deliverable, NFR-10 | State how AI contributed and how the owner reviewed the work. |
 | `docs/images/*.png` | FR-01, FR-02, FR-06, NFR-07 | Include the four supplied landing, onboarding, dashboard, and mobile screenshots in the README. |
 
-A second-machine setup, deployment, and new external-account checks are not claimed. Final document approval and push remain pending until explicitly approved.
+The final documents and screenshots were approved and published in `039a788`.
+The screenshot guide was later removed in the approved `readme refinement` commit,
+`87bb949`; the four README images remain. Second-machine setup is owner-confirmed.
+Deployment has not been performed. Further documentation changes require their
+own review and approval before publication.

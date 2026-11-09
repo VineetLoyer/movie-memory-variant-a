@@ -269,6 +269,7 @@ Google Chrome is required. Reports, runtime keys, cookies, and traces stay ignor
 | Evidence | Result and boundary |
 | --- | --- |
 | Independent publication copy | Pinned `npm ci`, Prisma generation, and production build passed with its own dependencies. This was not a second-machine test. |
+| Second-machine setup | The owner confirmed that cloning the repository, following the setup steps, and repeating the application checks succeeded on another machine. This is owner-reported manual verification. |
 | Migration setup | `migrate deploy` and `migrate status` passed in a new owned schema in the guarded test database. All five application tables were created, then that schema was removed. |
 | Integration/security | 30 tests passed against guarded PostgreSQL and controlled provider responses. |
 | Production browser | 12 desktop/mobile tests passed, including persistence, logout, timeout, stale fallback, and a two-tab burst with one request and one insert. Uses seeded sessions, not Google OAuth. |
@@ -281,20 +282,81 @@ Google Chrome is required. Reports, runtime keys, cookies, and traces stay ignor
 
 ## Tradeoffs and next two hours
 
-- The promise map is process-local. Multiple instances need a shared generation
-  lease with expiry; distributed locking is not claimed.
-- Titles remain free text. Ambiguity, spelling correction, and catalog matching
-  are not solved. AI facts are labeled unverified.
-- The existing timestamp schema is interpreted as UTC. A reviewed migration to
-  `timestamptz` could simplify this while preserving existing instants.
-- There is no persistent failure backoff, spending cap, or automatic update
-  between browsers. A later stale refresh can retry; another tab updates on reload.
-- The production build uses Webpack after reproducible Turbopack source-map
-  failures in development of this project. Dev serving still uses Turbopack.
+### Choices and their limits
 
-With two more hours, I would verify setup on a second machine, improve provider
-backoff and operational diagnostics, and rehearse the design walkthrough. A shared
-database lease would come first if deployment needed several server processes.
+**Duplicate requests share work within one running server.** When a fact expires,
+two tabs can ask for a replacement at the same time. Both wait for the same
+generation-and-save promise, so the server makes one OpenAI request and saves one
+fact. I chose an in-memory map because the assessment allows it and it keeps the
+coordination easy to inspect and test. The limit matters when scaling: if those
+tabs reach two separate server processes, each has its own map and both could
+generate a fact. Before running multiple instances, I would move the coordination
+into PostgreSQL, with an expiring claim so another worker can recover if the
+first one crashes.
+
+**Movie titles are free text.** Saving a title needs no extra search service or
+catalog account. The tradeoff is ambiguity: someone entering `Dune` may mean a
+different adaptation from the one the model assumes. Spelling mistakes can also
+affect the result. A movie picker with release year and director would help, but
+it would add an external dependency and another set of loading and error states.
+For this version, I kept the assessment's simple title input and labeled the facts
+as unverified.
+
+**A provider failure keeps the last saved fact available.** For example, if OpenAI
+times out after a fact expires, the dashboard shows that fact with a fallback
+notice. If the account has no saved fact, it shows unavailable. The shared task
+is cleared afterward, so a later refresh can try again. This also means repeated
+refreshes during an outage can cause repeated attempts. The ten-second timeout,
+zero retries, and output limit bound each attempt; they do not set a daily
+spending limit. A production release would need an explicit cost and retry policy,
+including how any retry delay should fit the required stale-cache behavior.
+
+**Other tabs update when refreshed.** If tabs A and B retrieve a new fact, tab C
+can keep showing its previous fact until its next request. Refreshing C reads the
+new saved record. I left out polling and live subscriptions because this app has
+no requirement to update every open browser immediately. This keeps background
+requests and client state small.
+
+**Fact times use UTC with the current database column type.** The store explicitly
+interprets timestamps as UTC and uses the database clock for cache age. This keeps
+the 60-second rule consistent across server time zones. PostgreSQL's `timestamptz`
+type would make that intent clearer in the schema. Changing the type needs a
+careful migration: a fact recorded at noon UTC must still represent the same
+moment afterward. I would verify that conversion against saved records before
+changing it.
+
+**Production builds use Webpack.** Turbopack produced repeatable source-map
+failures while building this project. The checked-in build command uses Next.js's
+Webpack option so the production build completes reliably. Development still uses
+Turbopack. I would revisit the compiler choice after reproducing the issue with a
+later framework version and checking that the production build and browser tests
+still pass.
+
+### What I would do with two more hours
+
+The clone-and-run check on a second machine is complete. I would use the extra
+time to make future changes easier to check and failures easier to understand.
+
+1. **First hour: run the fast checks automatically on GitHub.** Add a workflow
+   that installs the pinned dependencies, generates the Prisma client, runs lint,
+   type checks, unit and UI tests, and builds the application. For example, a change
+   that accidentally treats a 60-second-old fact as fresh should fail before it
+   is merged. These checks can use controlled inputs and build-only configuration,
+   without live Google sessions or paid OpenAI calls. The database and browser
+   suites would remain separately documented until their test service is also
+   configured in the workflow.
+2. **Second hour: make failures easier to diagnose.** Add safe server events for
+   cache reuse, generation attempts, timeouts, failed database writes, and fallback
+   selection. For example, an operator should be able to distinguish a saved-fact
+   fallback after an OpenAI failure from an unavailable result after a failed
+   database write.
+   Keep titles, profiles, cookies, and credentials out of those events. Use the
+   existing controlled timeout and concurrent-request tests to check the new
+   diagnostics without making paid calls.
+
+If the deployment required multiple server processes, shared database coordination
+would take priority over those improvements. The current in-memory guard should
+only be relied on within one process.
 
 AI assistance is described in [AI_USAGE.md](AI_USAGE.md). The font license and
 image-source notes are included under `public/`.

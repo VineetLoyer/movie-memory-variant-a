@@ -38,6 +38,14 @@ The initial independent install was blocked by disk space. A later install and
 build succeeded. This verifies a clean dependency installation on the same
 machine, not setup on another operating system or a second machine.
 
+## Second-machine verification
+
+The owner subsequently confirmed that the project was cloned and set up on
+another machine and that the application checks succeeded. This completes the
+manual clone-and-run check. It is owner-reported evidence, separate from the
+automated publication tests above; no additional runtime logs or test counts are
+claimed for that machine.
+
 ## Live checks reported separately
 
 During development, the owner confirmed real Google sign-in, first-time movie
@@ -65,8 +73,9 @@ included as public evidence.
 - Google photo delivery is external. Missing or failed photos show initials.
 - The architecture explorer is development-only. A production not-found boundary
   may have HTTP 200 if streaming already began; it does not reveal private data.
-- The repository has not been deployed. External account setup and a fresh-machine
-  walkthrough remain manual checks.
+- The repository has not been deployed. Each new installation still needs its own
+  database and external-account configuration. The second-machine walkthrough has
+  been completed and confirmed by the owner.
 
 See [setup.md](setup.md) for clone-to-run instructions,
 [acceptance-scenarios.md](acceptance-scenarios.md) for repeatable checks, and
