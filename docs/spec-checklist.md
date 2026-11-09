@@ -31,8 +31,8 @@ Each batch has its own review and test gate. Some early batches contain only par
 | 1 | Assessment, requirements plan, and checklist | Confirm the assessment is unchanged. Check requirement IDs, diagrams, plain language, portable paths, and absence of secrets. | `docs: define assessment requirements and Variant A implementation plan` | Published as `e0d165c`. |
 | 2 | Dependency, build, lint, type, and test configuration | Check the lockfile and runtime versions. Review the environment template and ignore rules. | `chore: establish pinned application and verification configuration` | Published as `12b5a25`. |
 | 3 | Data model, migration, database access, shared types, and title validation | Validate the Prisma schema. Test constraints and migration setup against a separate database. | `feat: define persistent identity and movie fact model` | Published as `d7f54d1`. |
-| 4 | Google sign-in, sessions, private onboarding, and related tests | Test routing, title checks, user ownership, competing saves, session expiry, and failed logout. | `feat: implement Google sessions and private onboarding` | Prepared for review. Approval pending. |
-| 5 | Fact cache, pending task map, OpenAI call, and failure recovery | Test cache timing, overlapping requests, separate users, timeout, invalid output, save failure, and fallback. | `feat: implement scoped fact caching and failure recovery` | Pending. |
+| 4 | Google sign-in, sessions, private onboarding, and related tests | Test routing, title checks, user ownership, competing saves, session expiry, and failed logout. | `feat: implement Google sessions and private onboarding` | Published as `e1c5171`. |
+| 5 | Fact cache, pending task map, OpenAI call, and failure recovery | Test cache timing, overlapping requests, separate users, timeout, invalid output, save failure, and fallback. | `feat: implement scoped fact caching and failure recovery` | Prepared for review. Approval pending. |
 | 6 | Pages, components, styles, licensed assets, and local design page | Run type checks, lint, and a build. Check keyboard use, application states, and phone-to-4K layouts. | `feat: assemble the responsive Movie Memory experience` | Pending. |
 | 7 | Complete application tests and publication checks | Run production-browser tests. Check user isolation, secrets, fixture cleanup, and setup from a clean copy. | `test: verify complete assessment journeys and publication safety` | Pending. |
 | 8 | Final README, AI-usage note, and design explanations | Check setup commands, links, limits, and test evidence. Review the public repository details. | `docs: complete setup architecture and AI usage handoff` | Prepare last. |
@@ -79,6 +79,23 @@ The schema alone does not enforce private reads, first-time-only saves, or a 60-
 | Test fixtures and type-check scope | NFR-02, NFR-08, NFR-09 | Keep test dependencies explicit and separate from normal application startup. |
 
 Real Google sign-in needs a running application and owner credentials. Controlled auth tests do not replace that check.
+
+## Batch 5 code references
+
+| File or block | Requirement IDs | Responsibility |
+| --- | --- | --- |
+| Public fact function | FR-07, FR-12, NFR-02 | Resolve the user and saved movie without accepting browser-supplied owner selectors. |
+| Fact types and test contracts | FR-07, FR-08, FR-10, NFR-08 | Define stored facts, database-clock snapshots, provider output, and public results. |
+| Freshness check | FR-08, NFR-04 | Treat ages below 60,000 milliseconds as fresh. Use database time. |
+| Pending task map and service | FR-09, NFR-05 | Share the full generation and save result in one server process. Remove the task after completion. |
+| Fact store | FR-04, FR-07, FR-08, NFR-02, NFR-04 | Use parameterized, owner-specific reads and writes. Save database timestamps and interpret them as UTC. |
+| OpenAI provider | FR-07, NFR-02, NFR-03 | Send title data without execution tools. Bound retries, timeout, and output. Reject incomplete responses. |
+| Generation deadline | FR-10, NFR-03 | Abort timed-out work and prevent late results from reaching persistence. |
+| Fallback result | FR-10, NFR-06 | Return the matching saved fact after provider failure, or an unavailable result. |
+| Fact unit and transport tests | FR-07, FR-08, FR-09, FR-10, NFR-02, NFR-08 | Check boundaries, independent scopes, invalid output, retries, and late responses with controlled providers. |
+| Fact database tests | FR-04, FR-07, FR-08, FR-09, FR-10, NFR-04, NFR-09 | Check actual storage, timestamps, ownership, burst saves, and fallback on the test database. |
+
+Controlled provider tests make no paid calls. Full browser rendering remains in Batch 6 and final browser checks in Batch 7.
 
 ## Requirement checks
 

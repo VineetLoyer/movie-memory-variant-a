@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "plugins": [],
+    "paths": {
+      "@/lib/identity": ["../fixtures/identity.ts"],
+      "@/lib/facts": ["../fixtures/facts.ts"],
+      "@/auth": ["../fixtures/auth.ts"],
+      "@/*": ["../../src/*"]
+    }
+  },
+  "include": ["./contracts.ts", "../foundation/**/*.ts"],
+  "exclude": ["../../node_modules"]
+}

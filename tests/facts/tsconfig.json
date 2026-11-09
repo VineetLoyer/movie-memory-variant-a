@@ -1,0 +1,6 @@
+{
+  "extends": "../contracts/tsconfig.json",
+  "compilerOptions": { "target": "ES2022" },
+  "include": ["../../src/lib/facts.ts", "../../src/lib/fact-engine/**/*.ts", "./**/*.ts"],
+  "exclude": ["../../node_modules"]
+}
