@@ -29,8 +29,8 @@ Each batch has its own review and test gate. Some early batches contain only par
 | Batch | Files or feature | Checks before approval | Proposed commit message | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Assessment, requirements plan, and checklist | Confirm the assessment is unchanged. Check requirement IDs, diagrams, plain language, portable paths, and absence of secrets. | `docs: define assessment requirements and Variant A implementation plan` | Published as `e0d165c`. |
-| 2 | Dependency, build, lint, type, and test configuration | Check the lockfile and runtime versions. Review the environment template and ignore rules. | `chore: establish pinned application and verification configuration` | Prepared for review. Approval pending. |
-| 3 | Data model, migration, database access, shared types, and title validation | Validate the Prisma schema. Test constraints and migration setup against a separate database. | `feat: define persistent identity and movie fact model` | Pending. |
+| 2 | Dependency, build, lint, type, and test configuration | Check the lockfile and runtime versions. Review the environment template and ignore rules. | `chore: establish pinned application and verification configuration` | Published as `12b5a25`. |
+| 3 | Data model, migration, database access, shared types, and title validation | Validate the Prisma schema. Test constraints and migration setup against a separate database. | `feat: define persistent identity and movie fact model` | Prepared for review. Approval pending. |
 | 4 | Google sign-in, sessions, private onboarding, and related tests | Test routing, title checks, user ownership, competing saves, session expiry, and failed logout. | `feat: implement Google sessions and private onboarding` | Pending. |
 | 5 | Fact cache, pending task map, OpenAI call, and failure recovery | Test cache timing, overlapping requests, separate users, timeout, invalid output, save failure, and fallback. | `feat: implement scoped fact caching and failure recovery` | Pending. |
 | 6 | Pages, components, styles, licensed assets, and local design page | Run type checks, lint, and a build. Check keyboard use, application states, and phone-to-4K layouts. | `feat: assemble the responsive Movie Memory experience` | Pending. |
@@ -42,6 +42,27 @@ Adjust batch contents before review if a file needs supporting code or tests. Ex
 Do not describe an early configuration or service batch as a complete application. Run the full application checks after assembly.
 
 Prepare the README and AI-usage note in Batch 8.
+
+## Batch 3 code references
+
+Requirement IDs in comments refer to `docs-plan.md`. Comments explain each block's role without repeating the full requirement.
+
+| File or block | Requirement IDs | What the block supplies |
+| --- | --- | --- |
+| Prisma datasource | NFR-01, NFR-02 | PostgreSQL configuration through environment variables. |
+| User and favorite movie | FR-02, FR-04, FR-05, FR-06 | Profile storage and the null value used before onboarding. The save service enforces the one-save rule. |
+| Account and Session | FR-01, FR-11, FR-12, NFR-02 | Stored identity and session records. Auth services enforce access, expiry, and logout. |
+| VerificationToken | NFR-01 | The authentication adapter's token model. |
+| MovieFact and its index | FR-07, FR-08, NFR-04 | Owner, title, text, database timestamp, and latest-fact lookup index. The fact service enforces cache age. |
+| Initial migration | FR-04, FR-07, NFR-04, NFR-09 | SQL for the model and timestamp default. Generated migration metadata remains unchanged. |
+| `src/lib/db.ts` | NFR-01, NFR-02 | Server-only access through a shared Prisma client. |
+| `src/lib/contracts.ts` | FR-03, FR-05, FR-06, FR-08, FR-10, NFR-02, NFR-06 | Result types for page data, movie saves, and fact states. Types describe results; services must enforce the rules. |
+| `src/lib/movie-input.ts` | FR-03 | Shared free-text title validation and input limits. |
+| Model tests | FR-01, FR-04, FR-06, FR-07, NFR-02, NFR-04, NFR-08 | Database constraints, optional fields, timestamp defaults, and owner-specific deletion. |
+| Test database helper | NFR-02, NFR-09 | Connection and role checks before tests can write. |
+| Title validation tests | FR-03, NFR-08 | Trimming, exact length boundaries, emoji input units, and unchanged valid text. |
+
+The schema alone does not enforce private reads, first-time-only saves, or a 60-second cache. Later service batches implement those checks.
 
 ## Requirement checks
 

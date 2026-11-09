@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// NFR-01, NFR-02: Read the PostgreSQL connection from private configuration.
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+// FR-04, FR-06: Keep each user's profile and favorite movie on one record.
+model User {
+  id            String      @id @default(cuid())
+  name          String?
+  email         String?     @unique
+  emailVerified DateTime?
+  image         String?
+  // FR-02, FR-05: Null marks incomplete onboarding; the save service checks this value.
+  favoriteMovie String?
+  accounts      Account[]
+  sessions      Session[]
+  movieFacts    MovieFact[]
+}
+
+// FR-01, NFR-02: Link each provider identity to a stable application user.
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+// FR-11, FR-12: Store expiring sessions for authentication checks and logout.
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// NFR-01: Retain the token model used by the authentication adapter.
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// FR-07, FR-08, NFR-04: Store facts by owner and movie with a database timestamp.
+model MovieFact {
+  id         String   @id @default(cuid())
+  userId     String
+  movieTitle String
+  text       String   @db.Text
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // FR-08: Support the latest-fact lookup for one user and exact title.
+  @@index([userId, movieTitle, createdAt, id])
+}
