@@ -1,0 +1,5 @@
+{
+  "extends": "../contracts/tsconfig.json",
+  "include": ["../../src/app/**/*.tsx", "../../src/app/actions.ts", "../../src/components/**/*.tsx", "./**/*.test.ts", "./**/*.test.tsx"],
+  "exclude": ["../../node_modules"]
+}

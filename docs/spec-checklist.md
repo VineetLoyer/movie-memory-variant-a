@@ -32,8 +32,8 @@ Each batch has its own review and test gate. Some early batches contain only par
 | 2 | Dependency, build, lint, type, and test configuration | Check the lockfile and runtime versions. Review the environment template and ignore rules. | `chore: establish pinned application and verification configuration` | Published as `12b5a25`. |
 | 3 | Data model, migration, database access, shared types, and title validation | Validate the Prisma schema. Test constraints and migration setup against a separate database. | `feat: define persistent identity and movie fact model` | Published as `d7f54d1`. |
 | 4 | Google sign-in, sessions, private onboarding, and related tests | Test routing, title checks, user ownership, competing saves, session expiry, and failed logout. | `feat: implement Google sessions and private onboarding` | Published as `e1c5171`. |
-| 5 | Fact cache, pending task map, OpenAI call, and failure recovery | Test cache timing, overlapping requests, separate users, timeout, invalid output, save failure, and fallback. | `feat: implement scoped fact caching and failure recovery` | Prepared for review. Approval pending. |
-| 6 | Pages, components, styles, licensed assets, and local design page | Run type checks, lint, and a build. Check keyboard use, application states, and phone-to-4K layouts. | `feat: assemble the responsive Movie Memory experience` | Pending. |
+| 5 | Fact cache, pending task map, OpenAI call, and failure recovery | Test cache timing, overlapping requests, separate users, timeout, invalid output, save failure, and fallback. | `feat: implement scoped fact caching and failure recovery` | Published as `4221eb2`. |
+| 6 | Pages, components, styles, licensed assets, and local design page | Run type checks, lint, and a build. Check keyboard use, application states, and phone-to-4K layouts. | `feat: assemble the responsive Movie Memory experience` | Prepared for review. Approval pending. |
 | 7 | Complete application tests and publication checks | Run production-browser tests. Check user isolation, secrets, fixture cleanup, and setup from a clean copy. | `test: verify complete assessment journeys and publication safety` | Pending. |
 | 8 | Final README, AI-usage note, and design explanations | Check setup commands, links, limits, and test evidence. Review the public repository details. | `docs: complete setup architecture and AI usage handoff` | Prepare last. |
 
@@ -96,6 +96,21 @@ Real Google sign-in needs a running application and owner credentials. Controlle
 | Fact database tests | FR-04, FR-07, FR-08, FR-09, FR-10, NFR-04, NFR-09 | Check actual storage, timestamps, ownership, burst saves, and fallback on the test database. |
 
 Controlled provider tests make no paid calls. Full browser rendering remains in Batch 6 and final browser checks in Batch 7.
+
+## Batch 6 code references
+
+| File or block | Requirement IDs | Responsibility |
+| --- | --- | --- |
+| Home and protected pages | FR-01, FR-02, FR-05, FR-06, FR-12 | Select landing, onboarding, or dashboard from the stored user state. |
+| Dashboard fact rendering | FR-06, FR-07, FR-10, NFR-06 | Display the saved fact, label stale fallback, and show an unavailable state when needed. |
+| Movie form | FR-03, FR-05, NFR-06, NFR-07 | Keep entered text, show validation errors, and provide accessible submission states. |
+| Avatar and page shell | FR-06, NFR-06, NFR-07 | Handle failed photos and missing names. Provide a skip link and consistent navigation. |
+| Shared styles and local assets | NFR-06, NFR-07, NFR-09 | Preserve the approved design, focus states, reduced motion, and phone-to-4K sizing. Include asset source and font license files. |
+| Loading and error pages | NFR-06, NFR-07 | Show safe recovery controls without exposing internal errors. |
+| Local architecture artifact | NFR-08 | Explain module roles and decisions. Its state explorer makes no provider or database calls. |
+| UI and resolution tests | FR-01, FR-02, FR-03, FR-06, FR-10, FR-12, NFR-06, NFR-07, NFR-08 | Test page guards, returned states, keyboard controls, and isolated dependency selection. |
+
+Complete integration and production-browser coverage is reviewed in Batch 7. Final setup and AI-usage documents remain in Batch 8.
 
 ## Requirement checks
 

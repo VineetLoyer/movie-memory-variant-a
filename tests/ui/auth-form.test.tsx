@@ -10,7 +10,7 @@ it.each([
   { mode: 'logout' as const, label: 'Sign out', message: /session may still be active/i },
 ])('keeps $mode retryable after a known failure', async ({ mode, label, message }) => {
   render(<AuthForm action={async () => ({ kind: 'error' })} mode={mode} />)
-  const button = screen.getByRole('button', { name: label, exact: true })
+  const button = screen.getByRole('button', { name: label })
   const form = button.closest('form')
   if (!form) throw new TypeError('Expected auth form')
   await act(async () => { fireEvent.submit(form) })
