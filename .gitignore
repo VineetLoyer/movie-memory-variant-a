@@ -1,0 +1,31 @@
+# Private configuration and local agent files
+.env*
+!.env.example
+AGENTS.md
+PRODUCT.md
+opencode.json
+.omo/
+.agents/
+.codex/
+.claude/
+.opencode/
+.impeccable/
+openspec/
+
+# Dependencies and generated application files
+node_modules/
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+# Test reports, traces and logs
+coverage/
+playwright-report/
+test-results/
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db

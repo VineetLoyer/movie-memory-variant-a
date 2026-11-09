@@ -1,0 +1,60 @@
+{
+  "name": "movie-memory",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "24.22.2",
+    "npm": "11.19.1"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check:contracts": "tsc -p tests/contracts/tsconfig.json --noEmit",
+    "test:foundation": "vitest run --project foundation",
+    "test:unit": "vitest run --project unit",
+    "test:ui": "vitest run --project ui",
+    "test:db": "vitest run --project db",
+    "test:integration": "vitest run --project integration",
+    "test:security": "vitest run --project security",
+    "test:e2e": "playwright test",
+    "check:secrets": "node scripts/check-secrets.mjs"
+  },
+  "dependencies": {
+    "@auth/prisma-adapter": "2.11.3",
+    "@prisma/client": "6.19.0",
+    "next": "16.4.5",
+    "next-auth": "5.0.0-beta.32",
+    "openai": "6.33.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@tailwindcss/postcss": "4.1.18",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/react": "16.3.0",
+    "@types/node": "22.19.3",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.4.5",
+    "jsdom": "27.2.0",
+    "postcss": "8.5.32",
+    "prisma": "6.19.0",
+    "tailwindcss": "4.1.18",
+    "typescript": "5.9.3",
+    "vitest": "4.1.12"
+  },
+  "overrides": {
+    "@prisma/config": {
+      "deepmerge-ts": "8.0.0",
+      "effect": "3.20.0"
+    },
+    "vitest": {
+      "vite": "7.3.7"
+    }
+  }
+}
